@@ -1021,27 +1021,47 @@ export const HEAT_CHANGE_ORDERS = [
   },
 ];
 
-export const HEAT_PHASE_DEADLINES = {
-  discovery: "10 Weeks Out",
-  concept: "8 Weeks Out",
-  engineering: "6 Weeks Out",
-  preprod: "4 Weeks Out",
-  fabrication: "2 Weeks Out",
-  logistics: "5 Days Out",
-  install: "Night Before",
-  strike: "After Close",
-} as const;
+// Phase deadlines per build tier — Small / Medium / Large.
+// Total runway from kickoff to activation date scales with tier:
+// Small = 5 weeks · Medium = 9 weeks · Large = 13 weeks.
+export const HEAT_PHASE_DEADLINES: Record<TierId, Record<string, string>> = {
+  small: {
+    discovery: "5 Weeks Out",
+    concept: "4 Weeks Out",
+    engineering: "3 Weeks Out",
+    preprod: "2 Weeks Out",
+    fabrication: "1 Week Out",
+    logistics: "2 Days Out",
+    install: "Night Before",
+    strike: "After Close",
+  },
+  medium: {
+    discovery: "9 Weeks Out",
+    concept: "7 Weeks Out",
+    engineering: "5 Weeks Out",
+    preprod: "3 Weeks Out",
+    fabrication: "1 Week Out",
+    logistics: "4 Days Out",
+    install: "Night Before",
+    strike: "After Close",
+  },
+  large: {
+    discovery: "13 Weeks Out",
+    concept: "11 Weeks Out",
+    engineering: "9 Weeks Out",
+    preprod: "6 Weeks Out",
+    fabrication: "3 Weeks Out",
+    logistics: "5 Days Out",
+    install: "Night Before",
+    strike: "After Close",
+  },
+};
 
-export const HEAT_PHASE_DEADLINES_SMALL = {
-  discovery: "4 Weeks Out",
-  concept: "3 Weeks Out",
-  engineering: "2 Weeks Out",
-  preprod: "10 Days Out",
-  fabrication: "1 Week Out",
-  logistics: "2 Days Out",
-  install: "Night Before",
-  strike: "After Close",
-} as const;
+export const HEAT_CADENCE_RUNWAY: Record<TierId, string> = {
+  small: "5-Week Runway",
+  medium: "9-Week Runway",
+  large: "13-Week Runway",
+};
 
 export function fmtMoney(n: number): string {
   return "$" + n.toLocaleString("en-US");

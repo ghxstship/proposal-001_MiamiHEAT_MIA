@@ -1111,6 +1111,36 @@
   color: var(--heat-yellow);
 }
 
+/* Cadence toggle — 3-button pill that drives both the lifecycle and
+   workback schedule. Active tab fills with heat-black. */
+.heat-cadence-toggle {
+  display: inline-flex;
+  border: 1px solid var(--heat-line-strong);
+  border-radius: 999px;
+  margin-top: 16px;
+  overflow: hidden;
+  flex-wrap: wrap;
+}
+.heat-cadence-toggle button {
+  padding: 8px 16px;
+  border: 0;
+  cursor: pointer;
+  background: transparent;
+  color: var(--heat-muted);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.heat-cadence-toggle button:hover {
+  color: var(--heat-ink);
+}
+.heat-cadence-toggle button[data-active="true"] {
+  background: var(--heat-ink);
+  color: var(--heat-paper);
+}
+
 /* Per-tier CTA + upsell hint at the bottom of each retainer card.
    Pinned to the bottom of the flex column so cards balance regardless
    of feature-count differences. */

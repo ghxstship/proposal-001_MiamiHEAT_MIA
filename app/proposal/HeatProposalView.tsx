@@ -5,7 +5,7 @@ import {
   HEAT_DOC,
   HEAT_LIFECYCLE,
   HEAT_PHASE_DEADLINES,
-  HEAT_PHASE_DEADLINES_SMALL,
+  HEAT_CADENCE_RUNWAY,
   HEAT_SITES,
   HEAT_TAXONOMY,
   HEAT_TIERS,
@@ -16,6 +16,7 @@ import {
   HEAT_ADDONS,
   ADDON_CATEGORY_LABELS,
   type AddonCategory,
+  type TierId,
   fmtMoney,
   fmtRange,
 } from "./data";
@@ -41,8 +42,7 @@ export function HeatProposalView() {
       <RetainerTiers />
       <ScopeOfWork />
       <ActivationSites />
-      <ProductionLifecycle />
-      <WorkbackSchedule />
+      <LifecycleAndWorkback />
       <InvestmentSummary />
       <PaymentMethod />
       <Addons />
@@ -536,63 +536,59 @@ function ActivationSites() {
 // ─────────────────────────────────────────────────────────────────────────
 // 8-Phase Production Lifecycle
 // ─────────────────────────────────────────────────────────────────────────
-function ProductionLifecycle() {
-  const [showSmall, setShowSmall] = useState(false);
-  const deadlines = showSmall ? HEAT_PHASE_DEADLINES_SMALL : HEAT_PHASE_DEADLINES;
+// ─────────────────────────────────────────────────────────────────────────
+// Production Lifecycle + Workback Schedule — single parent owns the
+// cadence selection so the toggle drives both the phase cards and the
+// workback table in lockstep.
+// ─────────────────────────────────────────────────────────────────────────
+const CADENCE_OPTIONS: { id: TierId; label: string }[] = [
+  { id: "small", label: "Small Cadence" },
+  { id: "medium", label: "Medium Cadence" },
+  { id: "large", label: "Large Cadence" },
+];
 
+function LifecycleAndWorkback() {
+  const [cadence, setCadence] = useState<TierId>("medium");
+  const deadlines = HEAT_PHASE_DEADLINES[cadence];
+
+  return (
+    <>
+      <ProductionLifecycle cadence={cadence} setCadence={setCadence} deadlines={deadlines} />
+      <WorkbackSchedule cadence={cadence} deadlines={deadlines} />
+    </>
+  );
+}
+
+function ProductionLifecycle({
+  cadence,
+  setCadence,
+  deadlines,
+}: {
+  cadence: TierId;
+  setCadence: (c: TierId) => void;
+  deadlines: Record<string, string>;
+}) {
   return (
     <section id="lifecycle" className="heat-section">
       <SectionHeader
         eyebrow="Production Lifecycle"
         title="From Brief To Strike."
-        sub="Eight phases, identical structure across every activation. Deadlines telescope to fit the tier — Medium/Large run a 10-week clock from kickoff to strike; Small condenses to four weeks."
+        sub="Eight phases, identical structure across every activation. The runway scales with build tier — Small condenses to five weeks, Medium runs nine, Large stretches to thirteen."
       />
-      <div
-        style={{
-          display: "inline-flex",
-          border: "1px solid var(--heat-line-strong)",
-          borderRadius: 999,
-          marginTop: 16,
-          overflow: "hidden",
-        }}
-        className="print-hide"
-      >
-        <button
-          type="button"
-          onClick={() => setShowSmall(false)}
-          className="heat-mono"
-          style={{
-            padding: "8px 16px",
-            border: 0,
-            cursor: "pointer",
-            background: !showSmall ? "var(--heat-ink)" : "transparent",
-            color: !showSmall ? "var(--heat-paper)" : "var(--heat-muted)",
-            fontSize: 11,
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-          }}
-        >
-          Medium / Large Cadence
-        </button>
-        <button
-          type="button"
-          onClick={() => setShowSmall(true)}
-          className="heat-mono"
-          style={{
-            padding: "8px 16px",
-            border: 0,
-            cursor: "pointer",
-            background: showSmall ? "var(--heat-ink)" : "transparent",
-            color: showSmall ? "var(--heat-paper)" : "var(--heat-muted)",
-            fontSize: 11,
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            fontWeight: 700,
-          }}
-        >
-          Small Cadence
-        </button>
+      <div className="heat-cadence-toggle print-hide" role="tablist" aria-label="Cadence">
+        {CADENCE_OPTIONS.map((opt) => (
+          <button
+            key={opt.id}
+            type="button"
+            role="tab"
+            aria-selected={cadence === opt.id}
+            onClick={() => setCadence(opt.id)}
+            className="heat-mono"
+            data-active={cadence === opt.id}
+          >
+            {opt.label}
+          </button>
+        ))}
       </div>
       <div style={{ marginTop: 20 }}>
         {HEAT_LIFECYCLE.map((p) => (
@@ -600,7 +596,7 @@ function ProductionLifecycle() {
             <div className="heat-phase-head">
               <span className="heat-phase-num">{p.num}</span>
               <span className="heat-phase-name">{p.name}</span>
-              <span className="heat-phase-deadline">{deadlines[p.id as keyof typeof deadlines]}</span>
+              <span className="heat-phase-deadline">{deadlines[p.id]}</span>
             </div>
             <p className="heat-phase-intent">{p.intent}</p>
             <div className="heat-phase-grid">
@@ -632,23 +628,21 @@ function ProductionLifecycle() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────
-// Workback Schedule
-// ─────────────────────────────────────────────────────────────────────────
-function WorkbackSchedule() {
+function WorkbackSchedule({ cadence, deadlines }: { cadence: TierId; deadlines: Record<string, string> }) {
   const rows = HEAT_LIFECYCLE.flatMap((p) =>
     p.milestones.slice(0, 2).map((m) => ({
       phase: p.name,
       milestone: m,
-      deadline: HEAT_PHASE_DEADLINES[p.id as keyof typeof HEAT_PHASE_DEADLINES],
+      deadline: deadlines[p.id],
     })),
   );
+  const tierLabel = cadence.charAt(0).toUpperCase() + cadence.slice(1);
   return (
     <section className="heat-section">
       <SectionHeader
-        eyebrow="Workback Schedule"
+        eyebrow={`Workback Schedule · ${HEAT_CADENCE_RUNWAY[cadence]}`}
         title="Calibrated Against Activation Date."
-        sub="All deadlines anchor against T = activation open. Each per-activation SOW pins T to a calendar date."
+        sub={`Every deadline counts back from the activation date for a ${tierLabel} build. Toggle the cadence above to see how Small, Medium, and Large compare.`}
       />
       <div className="heat-investment" style={{ marginTop: 20 }}>
         <table>
