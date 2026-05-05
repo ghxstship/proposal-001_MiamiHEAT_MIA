@@ -215,6 +215,12 @@ function ProjectOverview() {
 // Retainer Tiers — Base / Elevated / Premium comparison cards
 // ─────────────────────────────────────────────────────────────────────────
 function RetainerTiers() {
+  const upsellLabel: Record<string, string> = {
+    base: "Need More? See Elevated →",
+    elevated: "Need More? See Premium →",
+  };
+  const premium = HEAT_RETAINER_TIERS.find((t) => t.id === "premium");
+
   return (
     <section id="retainer" className="heat-section">
       <SectionHeader
@@ -254,29 +260,52 @@ function RetainerTiers() {
                   </li>
                 ))}
               </ul>
-              {tier.exclusive && tier.exclusive.length > 0 && (
-                <>
-                  <div className="heat-retainer-exclusive-head">
-                    <span className="heat-flame" aria-hidden="true" />
-                    Premium Exclusives · Reserved For The Top Tier
-                  </div>
-                  <ul className="heat-retainer-features exclusive">
-                    {tier.exclusive.map((f) => (
-                      <li key={f.name} data-exclusive="true">
-                        <span />
-                        <div>
-                          <div className="heat-name">{f.name}</div>
-                          <div className="heat-desc">{f.detail}</div>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
+              <div className="heat-retainer-cta">
+                <a
+                  href="#sign"
+                  className={flagship ? "heat-btn danger" : "heat-btn"}
+                  data-tier-cta={tier.id}
+                >
+                  Choose {tier.name}
+                </a>
+                {upsellLabel[tier.id] && (
+                  <a
+                    href={tier.id === "base" ? "#retainer" : "#retainer"}
+                    className="heat-retainer-upsell"
+                    data-upsell-from={tier.id}
+                  >
+                    {upsellLabel[tier.id]}
+                  </a>
+                )}
+              </div>
             </article>
           );
         })}
       </div>
+
+      {premium?.exclusive && premium.exclusive.length > 0 && (
+        <div className="heat-premium-banner" aria-labelledby="premium-banner-title">
+          <div className="heat-premium-banner-head">
+            <span className="heat-flame" aria-hidden="true" />
+            <span id="premium-banner-title" className="heat-premium-banner-eyebrow">
+              Premium Exclusives · Reserved For The Top Tier
+            </span>
+          </div>
+          <h3 className="heat-premium-banner-title">Lines You Won't Find Anywhere Else.</h3>
+          <p className="heat-premium-banner-sub">
+            Four lines available only at the Premium tier — not à la carte, not on Elevated, not as a one-off
+            buy. Reserved for partners running a season-defining program with us.
+          </p>
+          <ul className="heat-premium-banner-grid">
+            {premium.exclusive.map((f) => (
+              <li key={f.name}>
+                <div className="heat-name">{f.name}</div>
+                <div className="heat-desc">{f.detail}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }
