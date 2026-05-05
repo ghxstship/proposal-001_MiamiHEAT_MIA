@@ -22,8 +22,8 @@ import {
 
 const SECTIONS = [
   { id: "overview", label: "Overview" },
-  { id: "retainer", label: "Retainer" },
   { id: "builds", label: "Builds" },
+  { id: "retainer", label: "Retainer" },
   { id: "scope", label: "Scope" },
   { id: "lifecycle", label: "Lifecycle" },
   { id: "investment", label: "Investment" },
@@ -37,8 +37,8 @@ export function HeatProposalView() {
       <HeatNav />
       <Hero />
       <ProjectOverview />
-      <RetainerTiers />
       <ActivationTiers />
+      <RetainerTiers />
       <ScopeOfWork />
       <ActivationSites />
       <ProductionLifecycle />
@@ -165,32 +165,32 @@ function ProjectOverview() {
     <section className="heat-section">
       <SectionHeader
         eyebrow="Project Overview"
-        title="Retained Capacity. Tiered Builds."
-        sub="Three engagement vectors, designed to compound. A monthly retainer holds dedicated studio capacity (pick one of three tiers). Each activation pulls from a tiered menu of buildouts. Add-Ons overlay either, on demand."
+        title="Tiered Builds. Retained Capacity."
+        sub="Three engagement vectors, designed to compound. Each activation pulls from a tiered build menu. A monthly retainer (pick one of three tiers) holds dedicated studio capacity behind the program. Add-Ons stack onto either, on demand."
       />
       <div className="heat-grid-3" style={{ marginTop: 24 }}>
         <div className="heat-card">
           <span className="heat-card-accent" />
-          <div className="heat-eyebrow">Retainer</div>
-          <h3 style={{ fontSize: 22, marginTop: 8 }}>Three Tiers</h3>
-          <dl style={{ marginTop: 12 }}>
-            <Detail label="Base" value={`${fmtMoney(HEAT_RETAINER_TIERS[0].price)} / mo`} />
-            <Detail label="Elevated" value={`${fmtMoney(HEAT_RETAINER_TIERS[1].price)} / mo`} />
-            <Detail label="Premium" value={`${fmtMoney(HEAT_RETAINER_TIERS[2].price)} / mo`} />
-            <Detail label="Commitment" value={HEAT_DOC.retainerCommitment} />
-          </dl>
-        </div>
-        <div className="heat-card">
-          <span className="heat-card-accent" style={{ background: "var(--heat-yellow)" }} />
-          <div className="heat-eyebrow" style={{ color: "var(--heat-yellow)" }}>
-            Per Activation
-          </div>
+          <div className="heat-eyebrow">Per Activation</div>
           <h3 style={{ fontSize: 22, marginTop: 8 }}>Build Menu</h3>
           <dl style={{ marginTop: 12 }}>
             <Detail label="Small" value={fmtRange(HEAT_TIERS[0].base, HEAT_TIERS[0].ceiling)} />
             <Detail label="Medium" value={fmtRange(HEAT_TIERS[1].base, HEAT_TIERS[1].ceiling)} />
             <Detail label="Large" value={fmtRange(HEAT_TIERS[2].base, HEAT_TIERS[2].ceiling)} />
             <Detail label="Includes" value="Production · Fab · Install · Strike" />
+          </dl>
+        </div>
+        <div className="heat-card">
+          <span className="heat-card-accent" style={{ background: "var(--heat-yellow)" }} />
+          <div className="heat-eyebrow" style={{ color: "var(--heat-yellow)" }}>
+            Retainer
+          </div>
+          <h3 style={{ fontSize: 22, marginTop: 8 }}>Three Tiers</h3>
+          <dl style={{ marginTop: 12 }}>
+            <Detail label="Base" value={`${fmtMoney(HEAT_RETAINER_TIERS[0].price)} / mo`} />
+            <Detail label="Elevated" value={`${fmtMoney(HEAT_RETAINER_TIERS[1].price)} / mo`} />
+            <Detail label="Premium" value={`${fmtMoney(HEAT_RETAINER_TIERS[2].price)} / mo`} />
+            <Detail label="Commitment" value={HEAT_DOC.retainerCommitment} />
           </dl>
         </div>
         <div className="heat-card">
@@ -684,12 +684,26 @@ function InvestmentSummary() {
     <section id="investment" className="heat-section">
       <SectionHeader
         eyebrow="Investment Summary"
-        title="Retainer Plus Build."
-        sub="Total program investment scales with your retainer tier and activation cadence. Choose a retainer, pick builds off the menu, and layer in the upgrades that fit the moment. Every figure covers production, fabrication, install, and strike."
+        title="Build Plus Retainer."
+        sub="Total program investment scales with your activation cadence and retainer tier. Pick builds off the menu, choose a retainer to hold studio capacity behind the program, and layer in the upgrades that fit the moment. Every figure covers production, fabrication, install, and strike."
       />
       <div className="heat-investment" style={{ marginTop: 20 }}>
         <table>
           <tbody>
+            <tr className="heat-row-section">
+              <td>Per-Activation Build</td>
+              <td className="right">Range · Base To Top Spec</td>
+            </tr>
+            {HEAT_TIERS.map((t) => (
+              <tr key={t.id}>
+                <td>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{t.name} Build</div>
+                  <div style={{ fontSize: 12, color: "var(--heat-muted)", marginTop: 2 }}>{t.size}</div>
+                </td>
+                <td className="right">{fmtRange(t.base, t.ceiling)}</td>
+              </tr>
+            ))}
+
             <tr className="heat-row-section">
               <td>Retainer Tier (Pick One)</td>
               <td className="right">Monthly · Annual</td>
@@ -707,20 +721,6 @@ function InvestmentSummary() {
                   <span style={{ color: "var(--heat-muted)" }}> / mo</span>
                   <div style={{ fontSize: 11, color: "var(--heat-muted)" }}>{fmtMoney(rt.price * 12)} / yr</div>
                 </td>
-              </tr>
-            ))}
-
-            <tr className="heat-row-section">
-              <td>Per-Activation Build</td>
-              <td className="right">Range · Base To Top Spec</td>
-            </tr>
-            {HEAT_TIERS.map((t) => (
-              <tr key={t.id}>
-                <td>
-                  <div style={{ fontWeight: 600, fontSize: 14 }}>{t.name} Build</div>
-                  <div style={{ fontSize: 12, color: "var(--heat-muted)", marginTop: 2 }}>{t.size}</div>
-                </td>
-                <td className="right">{fmtRange(t.base, t.ceiling)}</td>
               </tr>
             ))}
 
