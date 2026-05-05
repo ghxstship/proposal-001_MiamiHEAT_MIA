@@ -1,6 +1,6 @@
 # Proposal 001 · Miami HEAT (MIA)
 
-**Miami HEAT × Agora — East Plaza Pop-Up Activation Program**
+**Miami HEAT × AGV Miami — East Plaza Pop-Up Activation Program**
 
 A digital interactive proposal for the Miami HEAT pop-up activation program at the East Plaza inside Kaseya Center. Document `AGORA-HEAT-001 · v1.1`.
 
@@ -45,7 +45,7 @@ Visit [http://localhost:3000](http://localhost:3000).
 
 ## Producer
 
-**Agora Visuals** · `mike@agoravisuals.com`
+**AGV Miami** · `mike@agoravisuals.com`
 
 ## Confidential
 

@@ -83,8 +83,8 @@ function HeatNav() {
   return (
     <nav className="heat-nav print-hide">
       <div className="heat-nav-inner">
-        <span className="heat-nav-brand" aria-label="Agora x Miami HEAT">
-          Agora <span className="heat-x">×</span> <span className="heat-wordmark">HEAT</span>
+        <span className="heat-nav-brand" aria-label="AGV Miami x Miami HEAT">
+          AGV Miami <span className="heat-x">×</span> <span className="heat-wordmark">HEAT</span>
         </span>
         <div className="heat-nav-links" aria-label="Section navigation">
           {SECTIONS.map((s) => (
@@ -261,11 +261,7 @@ function RetainerTiers() {
                 ))}
               </ul>
               <div className="heat-retainer-cta">
-                <a
-                  href="#sign"
-                  className={flagship ? "heat-btn danger" : "heat-btn"}
-                  data-tier-cta={tier.id}
-                >
+                <a href="#sign" className={flagship ? "heat-btn danger" : "heat-btn"} data-tier-cta={tier.id}>
                   Choose {tier.name}
                 </a>
                 {upsellLabel[tier.id] && (
@@ -293,8 +289,8 @@ function RetainerTiers() {
           </div>
           <h3 className="heat-premium-banner-title">Lines You Won't Find Anywhere Else.</h3>
           <p className="heat-premium-banner-sub">
-            Four lines available only at the Premium tier — not à la carte, not on Elevated, not as a one-off
-            buy. Reserved for partners running a season-defining program with us.
+            Four lines available only at the Premium tier — not à la carte, not on Elevated, not as a one-off buy.
+            Reserved for partners running a season-defining program with us.
           </p>
           <ul className="heat-premium-banner-grid">
             {premium.exclusive.map((f) => (
@@ -734,12 +730,10 @@ function InvestmentSummary() {
             </tr>
             <tr>
               <td>
-                <div style={{ fontWeight: 600, fontSize: 14 }}>
-                  {HEAT_ADDONS.length} menu items across 5 categories
-                </div>
+                <div style={{ fontWeight: 600, fontSize: 14 }}>{HEAT_ADDONS.length} menu items across 5 categories</div>
                 <div style={{ fontSize: 12, color: "var(--heat-muted)", marginTop: 2 }}>
-                  Material & Finish · Functional Upgrades · Service Overlays · Logistics · Documentation. Add any
-                  number to any retainer or activation.
+                  Material & Finish · Functional Upgrades · Service Overlays · Logistics · Documentation. Add any number
+                  to any retainer or activation.
                 </div>
               </td>
               <td className="right">Priced By Request</td>
@@ -856,7 +850,7 @@ function PaymentMethod() {
             fontSize: 13,
           }}
         >
-          <Detail label="Payable To" value="Agora Visuals" />
+          <Detail label="Payable To" value="AGV Miami" />
           <Detail label="Reference" value={HEAT_DOC.docNumber} />
           <Detail label="ACH / Wire" value="Banking detail issued with executed contract" />
           <Detail label="Currency" value="USD" />

@@ -27,13 +27,13 @@ const shareTechMono = Share_Tech_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Miami HEAT × Agora — East Plaza Pop-Up Activation Program",
+  title: "Miami HEAT × AGV Miami — East Plaza Pop-Up Activation Program",
   description:
-    "Tiered activation buildouts for the East Plaza inside Kaseya Center. Three retainer tiers (Base $5K · Elevated $8K · Premium $10K) plus a tiered build menu with a stackable add-on catalog. Prepared by Agora Visuals for Miami HEAT.",
+    "Tiered activation buildouts for the East Plaza inside Kaseya Center. Three retainer tiers (Base $5K · Elevated $8K · Premium $10K) plus a tiered build menu with a stackable add-on catalog. Prepared by AGV Miami for Miami HEAT.",
   keywords:
-    "Miami HEAT, Agora Visuals, East Plaza, Kaseya Center, brand activation, pop-up, fabrication, retail buildout, sponsorship, NBA",
+    "Miami HEAT, AGV Miami, East Plaza, Kaseya Center, brand activation, pop-up, fabrication, retail buildout, sponsorship, NBA",
   openGraph: {
-    title: "Miami HEAT × Agora — East Plaza Pop-Up Activation Program",
+    title: "Miami HEAT × AGV Miami — East Plaza Pop-Up Activation Program",
     description:
       "Retainer + tiered build + add-on catalog for the 26–27 NBA season activation cycle.",
     type: "website",
